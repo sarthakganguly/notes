@@ -1,0 +1,19 @@
+@-webkit-keyframes zoom-in {
+	0% {
+		-webkit-transform: scale(0.1) transform3d(0,0,0);
+	}
+
+	100% {
+		-webkit-transform: scale(1) transform3d(0,0,0);
+	}
+}
+
+@-webkit-keyframes spin {
+	0% {
+		-webkit-transform: rotate(0deg) transform3d(0,0,0);
+	}
+
+	100% {
+		-webkit-transform: rotate(3600deg) transform3d(0,0,0);
+	}
+}

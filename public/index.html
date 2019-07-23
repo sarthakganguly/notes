@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset=utf-8>
+  <title>Springseed</title>
+  <!-- TODO: Find out how to include this in setup.coffee -->
+  <script src="handlebars.runtime.js"></script>
+  <script src="emojify.js"></script>
+  <link rel="stylesheet" href="sublime.css">
+  <link rel="stylesheet" href="application.css">
+  <link rel="stylesheet" href="font-awesome.min.css">
+  <script src="application.js"></script>
+</head>
+<body>
+  <div id="container">
+    <div id="panel">
+      <!-- <div id="decor" class="nodrag">
+        <img class="close" src="img/close.png"><img class="minimize" src="img/minimize.png"><img class="maximize" src="img/maximize.png">
+      </div>
+      <div id="loginbox">
+        <span class="name">Log In</span>
+        <span class="gopro">go pro</span>
+      </div>
+      <!-- <div id="search">
+        <input type="text" placeholder="Search">
+      </div> -->
+    </div>
+    <div id="parent">
+      <aside id="sidebar" class="panel">
+        <div class="container">
+          <span class="title">notebooks</span>
+          <ul></ul>
+          <input type="text" placeholder="New notebook...">
+        </div>
+        <div id="settingsbar">
+          <i id="settings" class="fa fa-cog" title="Settings"></i>
+          <i id="sync" class="fa fa-refresh" title="Sync your notes"></i>
+        </div>
+      </aside>
+      <section id="browser" class="panel">
+        <span class="title">notes</span><span id="new"><i class="fa fa-plus"></i></span>
+        <ul></ul>
+      </section>
+      <section id="editor" class="panel deselected">
+        <header>
+          <div class="headerwrap">
+            <div class="left">
+              <i class="star fa fa-star-o"></i><input type="text" disabled>
+              <time></time>
+            </div>
+            <div class="right">
+              <button class="toggle edit" title="Edit note"><i class="fa fa-pencil"></i></button>
+              <button class="revert" title="Revert changes"><i class="fa fa-share"></i></button>
+              <!-- <button class="share"><i class="fa fa-upload"></i></button> -->
+              <button class="delete" title="Delete note"><i class="fa fa-trash-o"></i></button>
+            </div>
+          </div>
+        </header>
+        <section id="contentscroller">
+          <textarea id="psuedoinput"></textarea><!-- Used for the paste event -->
+          <section id="contentwrite"><div class="wc">0</div><section class="inner" contenteditable></section></section>
+          <section id="contentread"></section>
+        </section>
+      </section>
+      <div id="editorcontrols"><button id="bold"><img src="img/bold.png"></button><button id="italics"><img src="img/italic.png"></button><button id="heading"><img src="img/heading.png"></button></div>
+    </div>
+  </div>
+<!-- Modals -->
+<section class="modal delete">
+  <div class="delete-container">
+    <span>Do you want to delete the note "<span class="name">Unknown</span>"?</span><br/>
+    <button class="true special">Yes</button>&nbsp;<button class="false special">No</button>
+  </div>
+</section>
+<section class="modal newNote">
+  <div class="newNote-container">
+    <span>You have to first select a notebook and then create a note in it.</span><br/>
+    <button class="gotit special">Got it</button>
+  </div>
+</section>
+<section class="modal revert">
+  <div class="delete-container">
+    <span>Are you sure you want to revert changes to this note?</span><br/>
+    <button class="true special">Yes, revert it</button>&nbsp;<button class="false special">No, keep editing</button>
+  </div>
+</section>
+<section class="modal syncmeta">
+  <div class="syncmeta-container">
+    <p>This is the first time you&#8217;re using this device to sync Springseed.</p>
+    <p>Would you like to load your notes from the cloud, or overwrite your cloud with the notes from this device?</p>
+    <button class="destroyclient special green">Load notes from the cloud</button>&nbsp;<button class="destroyserver special">Overwrite your cloud with your local notes</button>
+  </div>
+</section>
+<!-- Stolen from 1.0.x -->
+<section class="modal preferences">
+  <div class="preferences-container">
+    <nav class="tabs">
+      <ul>
+        <!-- <li data-id="account" class="current">Account</li> -->
+        <li data-id="sync" class="current">Sync</li>
+        <li data-id="about">About</li>
+      </ul>
+    </nav>
+    <div class="container">
+      <!-- <div class="account current">
+        <!-- <img src="img/icon.svg" width="150"> >
+        <div class="signedout">
+          <p>Your Springseed Account can do amazing things. Learn more or register <a target="_blank" href="http://accounts.springseed.com/register">here</a>.</p>
+          <input type="text" id="accusername" placeholder="Username">
+          <input type="password" id="accpassword" placeholder="Password">
+          <button id="signin" class="special">Sign In</button>
+        </div>
+        <div class="signedin">
+          <p>Signed in as <strong class="name"></strong></p>
+          <div id="pro" class="pro"><h1>Go pro today!</h1><p>Springseed Pro is a one time payment of $8. This goes towards development of more pro freatures (and some free features). Pro also entitles you to try new features before anyone else. Isn't that great?</div>
+          <div id="alreadypro" class="pro"><h1>You're Pro!</h1><p>You. Are. Awesome. You're helping Springseed grow and develop into a much better piece of software. Thank you.</div>
+          <button id="signout" class="special">Sign Out</button>
+        </div>
+      </div> -->
+      <div class="sync current">
+        <img src="img/dropbox.png">
+        <div class="signedout">
+          <p>Springseed can connect to Dropbox for access to notes on all your devices.</p>
+          <button id="signin" class="special">Sign In</button>
+        </div>
+        <div class="signedin">
+          <p>Signed in as <strong class="username"></strong></p>
+          <button id="signout" class="special">Sign Out</button>
+        </div>
+      </div>
+      <div class="about">
+        <br>
+          <img src="img/icon.svg" width="150">
+          <h1>Springseed <small>2.0</small></h1>
+          <p>&copy; 2012-2014 Springseed</p>
+          <p><a href="http://getspringseed.com">http://getspringseed.com</a></p>
+        <br><br>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="modal deleteNotebook">
+  <div class="delete-container">
+    <span>Are you sure you want to delete the <span class="type"></span> <i></i> and <span class="numberofNotes"></span> note<span class="oneOrMore">s</span> inside?</span><br>
+    <button class="true special">Yes, delete it</button>&nbsp;<button class="false special">No, keep it</button>
+  </div>
+</section>
+<section class="modal renameNotebook">
+  <div class="rename-container">
+    <input type="text"><br>
+    <button class="true special">Rename</button>&nbsp;<button class="false special">Cancel</button>
+  </div>
+  </section>
+
+<section class="modal pleaseLogIn">
+  <div class="delete-container">
+    <span>You need to be logged in to do that.</span>
+    <button class="false special">Okay.</button>
+  </div>
+</section>
+
+<!-- Popovers -->
+<section class="popover-mask">
+  <div class="delete-popover">
+    <div class="arrow"></div><div class="container">
+      <input id="addCat" placeholder="add category"><button id="deleteNotebook">delete</button><button id="renameNotebook">rename</button>
+    </div>
+  </div>
+  <div class="category-popover">
+    <div class="arrow"></div><div class="container">
+     <input type="text" placeholder="Category Name"><button>Add</button>
+    </div>
+  </div>
+  <div class="share-popover">
+    <div class="arrow"></div><div class="container">
+      <a href="#"><button id="emailNote">email</button></a><button id="printNote">print</button>
+    </div>
+  </div>
+</section>
+</body>
+</html>
